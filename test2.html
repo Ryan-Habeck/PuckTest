@@ -32,7 +32,7 @@
                              showRoller: true,
                              digitsAfterDecimal: 3, 
                              dateWindow: [date_win_min, date_win_max],      // valueRange: [980, 1020],
-                             labels: ['Time', 'Pressure'],                           
+                             labels: ['Time', 'Acceleration'],                           
                              showRangeSelector: true                         
                             });
         function onLine(v) { 
@@ -46,7 +46,9 @@
             };                        
             
             data.push([x, y]);
-            g.updateOptions( { 'file': data } );
+            if ((data.length&15)==15) {
+              g.updateOptions( { 'file': data } );
+            };  
           };
         } 
         function startstop_record()      {  
@@ -57,7 +59,7 @@
           } 
           else { 
             data.splice(0,data.length);  
-            connection.write("setInterval(function(){Bluetooth.println(respiration().toFixed(3));} ,20); \n", function() { });
+            connection.write("setInterval(function(){Bluetooth.println(respiration().toFixed(3));} ,10); \n", function() { });
             t = new Date();  
             start_time = t;  
             var date_win_min = t.getTime();  
